@@ -1,0 +1,4 @@
+--patch-module
+com.tugalsan.tst.yguard=_
+--add-reads
+com.tugalsan.tst.yguard=ALL-UNNAMED

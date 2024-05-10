@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="main"  >
+<target name="main">
+  <property name="project.jar" value="D:\git\tst\com.tugalsan.tst.yguard\target/com.tugalsan.tst.yguard-1.0-SNAPSHOT.jar"/>
+  <property name="project.jar.unobf" value="D:\git\tst\com.tugalsan.tst.yguard\target/com.tugalsan.tst.yguard-1.0-SNAPSHOT_unobf.jar"/>
+  <move file="${project.jar}" tofile="${project.jar.unobf}" verbose="true"/>
+  <property name="runtime_classpath" refid="maven.runtime.classpath"/>
+  <taskdef classname="com.yworks.yguard.YGuardTask" classpath="${runtime_classpath}" name="yguard"/>
+  <yguard>
+    <inoutpair in="${project.jar.unobf}" out="${project.jar}"/>
+    <rename logfile="D:\git\tst\com.tugalsan.tst.yguard\target/com.tugalsan.tst.yguard-1.0-SNAPSHOT_renamelog.xml">
+      <keep>
+        <method name="void main(java.lang.String[])" class="${mainclass}"/>
+      </keep>
+    </rename>
+  </yguard>
+</target>
+</project>
