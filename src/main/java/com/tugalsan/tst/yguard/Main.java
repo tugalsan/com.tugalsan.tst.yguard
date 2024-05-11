@@ -41,6 +41,7 @@ public class Main {
                     pathOutput.resolve("_skipped_b.txt"),
                     false
             );
+            return;
         }
         //write txt
         TS_FileTxtUtils.toFile(
@@ -92,16 +93,20 @@ public class Main {
             sniff(pathOutput, sniffed, packA.identifier, packA.url, packB.url);
         }
         //write unprocessed links
-        TS_FileTxtUtils.toFile(
-                TGS_StringUtils.toString(unprocessedA, "\n"),
-                pathOutput.resolve("_unprocessed_links_a.txt"),
-                true
-        );
-        TS_FileTxtUtils.toFile(
-                TGS_StringUtils.toString(packs_b, "\n"),
-                pathOutput.resolve("_unprocessed_links_b.txt"),
-                true
-        );
+        if (!unprocessedA.isEmpty()) {
+            TS_FileTxtUtils.toFile(
+                    TGS_StringUtils.toString(unprocessedA, "\n"),
+                    pathOutput.resolve("_unprocessed_links_a.txt"),
+                    true
+            );
+        }
+        if (!packs_b.isEmpty()) {
+            TS_FileTxtUtils.toFile(
+                    TGS_StringUtils.toString(packs_b, "\n"),
+                    pathOutput.resolve("_unprocessed_links_b.txt"),
+                    true
+            );
+        }
     }
 
     record Link(TGS_Url url, String identifier) {
