@@ -8,7 +8,9 @@ import com.tugalsan.api.file.txt.server.TS_FileTxtUtils;
 import com.tugalsan.api.log.server.TS_Log;
 import com.tugalsan.api.stream.client.TGS_StreamUtils;
 import com.tugalsan.api.string.client.TGS_StringUtils;
+import com.tugalsan.api.unsafe.client.TGS_UnSafe;
 import com.tugalsan.api.url.client.TGS_Url;
+import com.tugalsan.api.url.client.TGS_UrlUtils;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,21 +19,37 @@ public class Main {
 
     final static private TS_Log d = TS_Log.of(Main.class);
 
-    private static void sniff(Path pathOutput, List<TGS_Url> sniffed, String name, TGS_Url urlA, TGS_Url urlB, TGS_Url urlABase, TGS_Url urlBBase) {
+    private static void sniff(Path pathOutput, List<TGS_Url> sniffed, String name, TGS_Url urlA, TGS_Url urlB) {
         //pre-check
         if (sniffed.stream().filter(u -> u.equals(urlA)).filter(u -> u.equals(urlB)).findAny().isPresent()) {
             return;
         }
         sniffed.add(urlA);
         sniffed.add(urlB);
+        pathOutput = pathOutput.resolve(name);
+        //get text
+        var txt_a = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlA), e -> null);
+        var txt_b = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlB), e -> null);
+        if (txt_a == null || txt_b == null) {
+            TS_FileTxtUtils.toFile(
+                    urlA.url,
+                    pathOutput.resolve("_skipped_a.txt"),
+                    false
+            );
+            TS_FileTxtUtils.toFile(
+                    urlB.url,
+                    pathOutput.resolve("_skipped_b.txt"),
+                    false
+            );
+        }
         //write txt
         TS_FileTxtUtils.toFile(
-                TS_FileHtmlUtils.toText(urlA),
+                txt_a,
                 pathOutput.resolve(name + "_txt_a.txt"),
                 false
         );
         TS_FileTxtUtils.toFile(
-                TS_FileHtmlUtils.toText(urlB),
+                txt_b,
                 pathOutput.resolve(name + "_txt_b.txt"),
                 false
         );
@@ -50,7 +68,7 @@ public class Main {
                 false
         );
         //process links 
-        processLinks(pathOutput, sniffed, urlABase, urlBBase, lnk_a, lnk_b);
+        processLinks(pathOutput.getParent(), sniffed, urlA, urlB, lnk_a, lnk_b);
     }
 
     private static void processLinks(Path pathOutput, List<TGS_Url> sniffed, TGS_Url urlABase, TGS_Url urlBBase, List<TGS_Url> lnk_a, List<TGS_Url> lnk_b) {
@@ -71,12 +89,27 @@ public class Main {
             }
             packs_a.remove(packA);
             packs_b.remove(packB);
-            sniff(pathOutput, sniffed, packA.identifier, packA.url, packB.url, urlABase, urlBBase);
+            sniff(pathOutput, sniffed, packA.identifier, packA.url, packB.url);
         }
+        //write unprocessed links
+        TS_FileTxtUtils.toFile(
+                TGS_StringUtils.toString(unprocessedA, "\n"),
+                pathOutput.resolve("_unprocessed_links_a.txt"),
+                true
+        );
+        TS_FileTxtUtils.toFile(
+                TGS_StringUtils.toString(packs_b, "\n"),
+                pathOutput.resolve("_unprocessed_links_b.txt"),
+                true
+        );
     }
 
     record Link(TGS_Url url, String identifier) {
 
+        @Override
+        public String toString() {
+            return url.toString();
+        }
     }
 
     public static void main(String... s) {
@@ -85,7 +118,7 @@ public class Main {
         var pathOutput = TS_PathUtils.getPathCurrent_nio().resolve("output");
         TS_DirectoryUtils.deleteDirectoryIfExists(pathOutput);
         TS_DirectoryUtils.createDirectoriesIfNotExists(pathOutput);
-        sniff(pathOutput, new ArrayList(), "_", urlA, urlB, urlA, urlB);
+        sniff(pathOutput, new ArrayList(), TGS_UrlUtils.getFileNameLabel(urlA), urlA, urlB);
     }
 
 }
