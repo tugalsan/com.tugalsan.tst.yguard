@@ -27,6 +27,7 @@ public class Main {
         sniffed.add(urlA);
         sniffed.add(urlB);
         pathOutput = pathOutput.resolve(name);
+        d.cr("sniff", urlA);
         //get text
         var txt_a = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlA), e -> null);
         var txt_b = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlB), e -> null);
