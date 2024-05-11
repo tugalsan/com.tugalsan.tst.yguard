@@ -3,53 +3,29 @@
 <!--
   yGuard Bytecode Obfuscator, v4.1.0, a Product of yWorks GmbH - http://www.yworks.com
 
-  Logfile created on Fri May 10 18:58:56 TRT 2024
+  Logfile created on Sat May 11 06:59:35 TRT 2024
 
   Jar file to be obfuscated:           com.tugalsan.tst.yguard-1.0-SNAPSHOT_unobf.jar
   Target Jar file for obfuscated code: com.tugalsan.tst.yguard-1.0-SNAPSHOT.jar
 
 -->
-<!-- ERROR - corrupt class file: jar:D:\git\tst\com.tugalsan.tst.yguard\target\com.tugalsan.tst.yguard-1.0-SNAPSHOT_unobf.jar|com/tugalsan/tst/yguard/Main.class -->
-java.io.IOException: Incompatible version number for class file format: 66.0
-	at com.yworks.yguard.obf.classfile.ClassFile.read(ClassFile.java:381)
-	at com.yworks.yguard.obf.classfile.ClassFile.create(ClassFile.java:180)
-	at com.yworks.yguard.obf.GuardDB.buildClassTree(GuardDB.java:721)
-	at com.yworks.yguard.obf.GuardDB.retain(GuardDB.java:150)
-	at com.yworks.yguard.ObfuscatorTask.execute(ObfuscatorTask.java:1224)
-	at com.yworks.yguard.YGuardTask.execute(YGuardTask.java:118)
-	at org.apache.tools.ant.UnknownElement.execute(UnknownElement.java:292)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.apache.tools.ant.dispatch.DispatchUtils.execute(DispatchUtils.java:106)
-	at org.apache.tools.ant.Task.perform(Task.java:348)
-	at org.apache.tools.ant.Target.execute(Target.java:435)
-	at org.apache.tools.ant.Target.performTasks(Target.java:456)
-	at org.apache.tools.ant.Project.executeSortedTargets(Project.java:1393)
-	at org.apache.tools.ant.Project.executeTarget(Project.java:1364)
-	at org.apache.maven.plugin.antrun.AntRunMojo.execute(AntRunMojo.java:313)
-	at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo(DefaultBuildPluginManager.java:126)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute2(MojoExecutor.java:328)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute(MojoExecutor.java:316)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:212)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:174)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.access$000(MojoExecutor.java:75)
-	at org.apache.maven.lifecycle.internal.MojoExecutor$1.run(MojoExecutor.java:162)
-	at org.apache.maven.plugin.DefaultMojosExecutionStrategy.execute(DefaultMojosExecutionStrategy.java:39)
-	at org.apache.maven.lifecycle.internal.MojoExecutor.execute(MojoExecutor.java:159)
-	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:105)
-	at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject(LifecycleModuleBuilder.java:73)
-	at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build(SingleThreadedBuilder.java:53)
-	at org.apache.maven.lifecycle.internal.LifecycleStarter.execute(LifecycleStarter.java:118)
-	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:261)
-	at org.apache.maven.DefaultMaven.doExecute(DefaultMaven.java:173)
-	at org.apache.maven.DefaultMaven.execute(DefaultMaven.java:101)
-	at org.apache.maven.cli.MavenCli.execute(MavenCli.java:906)
-	at org.apache.maven.cli.MavenCli.doMain(MavenCli.java:283)
-	at org.apache.maven.cli.MavenCli.main(MavenCli.java:206)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.launchEnhanced(Launcher.java:283)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.launch(Launcher.java:226)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.mainWithExitCode(Launcher.java:407)
-	at org.codehaus.plexus.classworlds.launcher.Launcher.main(Launcher.java:348)
+<!-- WARNING - identifier from script file not found in JAR: ${mainclass}/main -->
+<!--
+  Memory in use after class data structure built: 30438432 bytes
+  Total memory available                        : 142606336 bytes
+-->
+<expose>
+</expose>
+<map>
+  <package name="com" map="A"/>
+  <package name="com.tugalsan" map="A"/>
+  <package name="com.tugalsan.tst" map="A"/>
+  <package name="com.tugalsan.tst.yguard" map="A"/>
+  <class name="com.tugalsan.tst.yguard.Main" map="A"/>
+  <field class="com.tugalsan.tst.yguard.Main" name="d" map="A"/>
+  <method class="com.tugalsan.tst.yguard.Main" name="void main(java.lang.String[])" map="A"/>
+  <method class="com.tugalsan.tst.yguard.Main" name="void process(java.nio.file.Path, java.util.List, java.lang.String, com.tugalsan.api.url.client.TGS_Url, com.tugalsan.api.url.client.TGS_Url)" map="A"/>
+  <method class="com.tugalsan.tst.yguard.Main" name="boolean lambda$process$0(com.tugalsan.api.url.client.TGS_Url, com.tugalsan.api.url.client.TGS_Url)" map="A"/>
+  <method class="com.tugalsan.tst.yguard.Main" name="boolean lambda$process$1(com.tugalsan.api.url.client.TGS_Url, com.tugalsan.api.url.client.TGS_Url)" map="B"/>
+</map>
 </yguard>
