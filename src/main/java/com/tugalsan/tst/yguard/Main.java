@@ -56,29 +56,31 @@ public class Main {
                 false
         );
         //parse links
-        var lnk_a = TS_FileHtmlUtils.parseLinks(urlA, true, true);
-        var lnk_b = TS_FileHtmlUtils.parseLinks(urlB, true, true);
+        var links_a = TS_FileHtmlUtils.parseLinks(urlA, true, true);
+        var links_b = TS_FileHtmlUtils.parseLinks(urlB, true, true);
         //write links
         TS_FileTxtUtils.toFile(
-                TGS_StringUtils.toString(lnk_a, "\n"),
+                TGS_StringUtils.toString(links_a, "\n"),
                 pathOutput.resolve(name + "_lnk_a.txt"),
                 false
         );
         TS_FileTxtUtils.toFile(
-                TGS_StringUtils.toString(lnk_b, "\n"),
+                TGS_StringUtils.toString(links_b, "\n"),
                 pathOutput.resolve(name + "_lnk_b.txt"),
                 false
         );
         //process links 
-        processLinks(pathOutput.getParent(), sniffed, urlA, urlB, lnk_a, lnk_b);
+        processLinks(pathOutput.getParent(), sniffed, urlA, urlB, links_a, links_b);
     }
 
-    private static void processLinks(Path pathOutput, List<TGS_Url> sniffed, TGS_Url urlABase, TGS_Url urlBBase, List<TGS_Url> lnk_a, List<TGS_Url> lnk_b) {
-        var packs_a = TGS_StreamUtils.toLst(lnk_a.stream().map(u -> new Link(u,
-                TGS_FileUtilsTur.toSafe(u.toString().substring(urlABase.toString().length()))
+    private static void processLinks(Path pathOutput, List<TGS_Url> sniffed, TGS_Url urlABase, TGS_Url urlBBase, List<TGS_Url> links_a, List<TGS_Url> links_b) {
+        var packs_a = TGS_StreamUtils.toLst(links_a.stream().map(u -> new Link(u,
+                urlABase.url.length() > u.url.length() ? "directory"
+                : TGS_FileUtilsTur.toSafe(u.toString().substring(urlABase.toString().length()))
         )));
-        var packs_b = TGS_StreamUtils.toLst(lnk_b.stream().map(u -> new Link(u,
-                TGS_FileUtilsTur.toSafe(u.toString().substring(urlBBase.toString().length()))
+        var packs_b = TGS_StreamUtils.toLst(links_b.stream().map(u -> new Link(u,
+                urlBBase.url.length() > u.url.length() ? "directory"
+                : TGS_FileUtilsTur.toSafe(u.toString().substring(urlBBase.toString().length()))
         )));
         List<Link> unprocessedA = new ArrayList();
         while (!packs_a.isEmpty()) {
