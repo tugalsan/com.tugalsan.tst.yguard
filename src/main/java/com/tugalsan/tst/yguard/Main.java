@@ -20,60 +20,76 @@ public class Main {
     final static private TS_Log d = TS_Log.of(Main.class);
 
     private static void sniff(Path pathOutput, List<TGS_Url> sniffed, String name, TGS_Url urlA, TGS_Url urlB) {
+        d.cr("sniff", "init", "--------------------------");
+        d.cr("sniff", "pathOutput", pathOutput);
+        d.cr("sniff", "name", name);
+        d.cr("sniff", "urlA", urlA);
+        d.cr("sniff", "urlB", urlB);
+        sniffed.forEach(u -> {
+            d.cr("sniff", "sniffed.u", u);
+        });
+
         //pre-check
         if (sniffed.stream().filter(u -> u.equals(urlA)).filter(u -> u.equals(urlB)).findAny().isPresent()) {
             return;
         }
         sniffed.add(urlA);
         sniffed.add(urlB);
-        pathOutput = pathOutput.resolve(name);
-        d.cr("sniff", urlA);
+        var pathOutputName = pathOutput.resolve(name);
+        d.cr("sniff", "pathOutputName", pathOutputName);
         //get text
         var txt_a = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlA), e -> null);
         var txt_b = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlB), e -> null);
         if (txt_a == null || txt_b == null) {
             TS_FileTxtUtils.toFile(
                     urlA.url,
-                    pathOutput.resolve("_skipped_a.txt"),
+                    pathOutputName.resolve("_skipped_a.txt"),
                     false
             );
             TS_FileTxtUtils.toFile(
                     urlB.url,
-                    pathOutput.resolve("_skipped_b.txt"),
+                    pathOutputName.resolve("_skipped_b.txt"),
                     false
             );
             return;
         }
         //write txt
-        TS_FileTxtUtils.toFile(
-                txt_a,
-                pathOutput.resolve(name + "_txt_a.txt"),
-                false
-        );
-        TS_FileTxtUtils.toFile(
-                txt_b,
-                pathOutput.resolve(name + "_txt_b.txt"),
-                false
-        );
+        var pathtxt_a = pathOutputName.resolve(name + "_txt_a.txt");
+        d.cr("sniff", "pathtxt_a", pathtxt_a);
+        TS_FileTxtUtils.toFile(txt_a, pathtxt_a, false);
+        var pathtxt_b = pathOutputName.resolve(name + "_txt_b.txt");
+        d.cr("sniff", "pathtxt_b", pathtxt_b);
+        TS_FileTxtUtils.toFile(txt_b, pathtxt_b, false);
         //parse links
         var links_a = TS_FileHtmlUtils.parseLinks(urlA, true, true);
         var links_b = TS_FileHtmlUtils.parseLinks(urlB, true, true);
         //write links
-        TS_FileTxtUtils.toFile(
-                TGS_StringUtils.toString(links_a, "\n"),
-                pathOutput.resolve(name + "_lnk_a.txt"),
-                false
-        );
-        TS_FileTxtUtils.toFile(
-                TGS_StringUtils.toString(links_b, "\n"),
-                pathOutput.resolve(name + "_lnk_b.txt"),
-                false
-        );
+        var pathlnk_a = pathOutputName.resolve(name + "_lnk_a.txt");
+        d.cr("sniff", "pathlnk_a", pathlnk_a);
+        TS_FileTxtUtils.toFile(TGS_StringUtils.toString(links_a, "\n"), pathlnk_a, false);
+        var pathlnk_b = pathOutputName.resolve(name + "_lnk_b.txt");
+        d.cr("sniff", "pathlnk_b", pathlnk_b);
+        TS_FileTxtUtils.toFile(TGS_StringUtils.toString(links_b, "\n"), pathlnk_b, false);
         //process links 
-        processLinks(pathOutput.getParent(), sniffed, urlA, urlB, links_a, links_b);
+        processLinks(pathOutput, sniffed, urlA, urlB, links_a, links_b);
     }
 
     private static void processLinks(Path pathOutput, List<TGS_Url> sniffed, TGS_Url urlABase, TGS_Url urlBBase, List<TGS_Url> links_a, List<TGS_Url> links_b) {
+        d.cr("processLinks", "init", "--------------------------");
+        d.cr("processLinks", "pathOutput", pathOutput);
+        d.cr("processLinks", "urlABase", urlABase);
+        d.cr("processLinks", "urlBBase", urlBBase);
+        d.cr("processLinks", "links_a", links_a);
+        d.cr("processLinks", "links_b", links_b);
+        links_a.forEach(u -> {
+            d.cr("sniff", "links_a.u", u);
+        });
+        links_b.forEach(u -> {
+            d.cr("sniff", "links_b.u", u);
+        });
+        sniffed.forEach(u -> {
+            d.cr("sniff", "sniffed.u", u);
+        });
         var packs_a = TGS_StreamUtils.toLst(links_a.stream().map(u -> new Link(u,
                 urlABase.url.length() > u.url.length() ? "directory"
                 : TGS_FileUtilsTur.toSafe(u.toString().substring(urlABase.toString().length()))
@@ -97,18 +113,14 @@ public class Main {
         }
         //write unprocessed links
         if (!unprocessedA.isEmpty()) {
-            TS_FileTxtUtils.toFile(
-                    TGS_StringUtils.toString(unprocessedA, "\n"),
-                    pathOutput.resolve("_unprocessed_links_a.txt"),
-                    true
-            );
+            var path_unprocessed_links_a = pathOutput.resolve("_unprocessed_links_a.txt");
+            d.cr("processLinks", "path_unprocessed_links_a", path_unprocessed_links_a);
+            TS_FileTxtUtils.toFile(TGS_StringUtils.toString(unprocessedA, "\n"), path_unprocessed_links_a, true);
         }
         if (!packs_b.isEmpty()) {
-            TS_FileTxtUtils.toFile(
-                    TGS_StringUtils.toString(packs_b, "\n"),
-                    pathOutput.resolve("_unprocessed_links_b.txt"),
-                    true
-            );
+            var path_unprocessed_links_b = pathOutput.resolve("_unprocessed_links_b.txt");
+            d.cr("processLinks", "path_unprocessed_links_a", path_unprocessed_links_b);
+            TS_FileTxtUtils.toFile(TGS_StringUtils.toString(packs_b, "\n"), path_unprocessed_links_b, true);
         }
     }
 
