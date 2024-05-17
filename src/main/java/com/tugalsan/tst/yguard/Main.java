@@ -31,6 +31,7 @@ public class Main {
 
         //pre-check
         if (sniffed.stream().filter(u -> u.equals(urlA)).filter(u -> u.equals(urlB)).findAny().isPresent()) {
+            d.ce("sniff", "notfound.u", urlA);
             return;
         }
         sniffed.add(urlA);
@@ -41,16 +42,10 @@ public class Main {
         var txt_a = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlA), e -> null);
         var txt_b = TGS_UnSafe.call(() -> TS_FileHtmlUtils.toText(urlB), e -> null);
         if (txt_a == null || txt_b == null) {
-            TS_FileTxtUtils.toFile(
-                    urlA.url,
-                    pathOutputName.resolve("_skipped_a.txt"),
-                    false
-            );
-            TS_FileTxtUtils.toFile(
-                    urlB.url,
-                    pathOutputName.resolve("_skipped_b.txt"),
-                    false
-            );
+            var path_skipped_a = pathOutputName.resolve("_skipped_a.txt");
+            TS_FileTxtUtils.toFile(urlA.url, path_skipped_a, false);
+            var path_skipped_b = pathOutputName.resolve("_skipped_b.txt");
+            TS_FileTxtUtils.toFile(urlB.url, path_skipped_b, false);
             return;
         }
         //write txt
@@ -79,8 +74,6 @@ public class Main {
         d.cr("processLinks", "pathOutput", pathOutput);
         d.cr("processLinks", "urlABase", urlABase);
         d.cr("processLinks", "urlBBase", urlBBase);
-        d.cr("processLinks", "links_a", links_a);
-        d.cr("processLinks", "links_b", links_b);
         links_a.forEach(u -> {
             d.cr("sniff", "links_a.u", u);
         });
@@ -133,12 +126,12 @@ public class Main {
     }
 
     public static void main(String... s) {
-        var urlA = TGS_Url.of("https://docs.oracle.com/javase/specs/jvms/se21/html/index.html");
-        var urlB = TGS_Url.of("https://docs.oracle.com/javase/specs/jvms/se22/html/index.html");
+        var urlA = TGS_Url.of("https://docs.oracle.com/javase/specs/jvms/se21/html/");
+        var urlB = TGS_Url.of("https://docs.oracle.com/javase/specs/jvms/se22/html/");
         var pathOutput = TS_PathUtils.getPathCurrent_nio().resolve("output");
         TS_DirectoryUtils.deleteDirectoryIfExists(pathOutput);
         TS_DirectoryUtils.createDirectoriesIfNotExists(pathOutput);
-        sniff(pathOutput, new ArrayList(), TGS_UrlUtils.getFileNameLabel(urlA), urlA, urlB);
+        sniff(pathOutput, new ArrayList(), TGS_FileUtilsTur.toSafe(TGS_UrlUtils.getFileNameFull(urlA)), urlA, urlB);
     }
 
 }
