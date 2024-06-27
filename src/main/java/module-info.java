@@ -1,5 +1,5 @@
 module com.tugalsan.tst.yguard {
-    requires com.tugalsan.api.callable;
+    requires com.tugalsan.api.function;
     requires com.tugalsan.api.file;
     requires com.tugalsan.api.url;
     requires com.tugalsan.api.string;
