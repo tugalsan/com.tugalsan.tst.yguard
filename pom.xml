@@ -5,7 +5,7 @@
     <artifactId>com.tugalsan.tst.yguard</artifactId>
     <version>1.0-SNAPSHOT</version>
     <dependencies>
-		<dependency>
+        <dependency>
             <groupId>com.yworks</groupId>
             <artifactId>yguard</artifactId>
             <version>4.1.0</version>
@@ -51,15 +51,14 @@
                 <version>3.13.0</version>
                 <configuration>
                     <release>21</release>
-                    <!-- <enablePreview>true</enablePreview> -->
-                    <!-- <compilerArgs>
-                       <arg>- -add-modules</arg>
+                    <enablePreview>true</enablePreview>
+                    <!--<compilerArgs>
+                        <arg>- -add-modules</arg>
                         <arg>jdk.incubator.vector</arg>
-                        <arg>-XX:+EnableDynamicAgentLoading 
-                    </compilerArgs> -->
+                    </compilerArgs>-->
                 </configuration>
             </plugin>
-			<plugin>
+            <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
                 <version>1.8</version>
                 <executions>
