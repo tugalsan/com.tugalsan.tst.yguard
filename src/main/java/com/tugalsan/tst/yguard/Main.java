@@ -30,7 +30,7 @@ public class Main {
         });
 
         //pre-check
-        if (sniffed.stream().filter(u -> u.equals(urlA)).filter(u -> u.equals(urlB)).findAny().isPresent()) {
+        if (sniffed.stream().filter(u -> u.equals(urlA)).anyMatch(u -> u.equals(urlB))) {
             d.ce("sniff", "notfound.u", urlA);
             return;
         }
